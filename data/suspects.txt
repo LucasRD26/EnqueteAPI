@@ -1,0 +1,10 @@
+1,Jean Dupont,35,Antécédents de vols à main armée
+2,Sophie Martin,28,Aucun casier judiciaire mais soupçonnée de proximité avec des individus dangereux
+3,Michel Leroy,40,Histoire de fraude financière plusieurs pseudonymes utilisés
+4,Sarah Laurent,22,Liée à un cas d'incendie criminel achat récent de produits inflammables
+5,David Moreau,50,Membre connu d'un gang de rue impliqué dans des crimes violents
+6,Émilie Garnier,33,Aucun casier judiciaire mais accès à des produits chimiques dangereux en tant que chimiste
+7,Jacques Durand,45,Antécédents d'agression physique plusieurs condamnations pour bagarres en bar
+8,Linda Rousseau,29,Aucun casier judiciaire mais héritière récente d'une somme importante sous conditions suspectes
+9,Robert Marchand,38,Antécédents de cambriolage spécialiste du désamorçage des systèmes de sécurité avancés
+10,Anne-Marie Petit,31,Aucun casier judiciaire mais disparue et soupçonnée dans un cas d'enlèvement

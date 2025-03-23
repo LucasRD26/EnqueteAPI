@@ -1,0 +1,10 @@
+1,Empreinte digitale,Trouvée sur l'arme correspondant à un criminel connu
+2,Enregistrement vidéo,Capturé près de la scène du crime montrant le suspect entrant dans le bâtiment
+3,Échantillon d'ADN,Correspondant au suspect prélevé sur un vêtement laissé sur les lieux
+4,Arme,Retrouvée dans le véhicule du suspect enregistrée à son nom
+5,Document,Faux contrat utilisé dans l'escroquerie contenant la signature du suspect
+6,Enregistrements téléphoniques,Liant le suspect à la victime montrant plusieurs appels passés avant le crime
+7,Enregistrement de sécurité,Montrant les actions du suspect capturé en train de manipuler les caméras de sécurité
+8,Échantillon de sang,Correspondant à la victime trouvé sur les vêtements du suspect
+9,Objets volés,Récupérés dans la résidence du suspect incluant des bijoux et des appareils électroniques signalés volés
+10,Indice anonyme,Fournissant des détails sur le crime menant à la découverte de preuves cruciales

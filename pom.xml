@@ -1,0 +1,7 @@
+<dependency>
+    <groupId>com.mxgraph</groupId>
+    <artifactId>jgraphx</artifactId>
+    <version>4.2.2</version>
+    <scope>system</scope>
+    <systemPath>${basedir}/lib/jgraphx.jar</systemPath>
+</dependency>

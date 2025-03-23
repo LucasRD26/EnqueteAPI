@@ -1,0 +1,10 @@
+1,2025-03-01,Paris,Vol,En cours
+2,2025-02-15,Lyon,Meurtre,Clôturé
+3,2025-01-20,Marseille,Fraude,En enquête
+4,2025-03-10,Bordeaux,Incendie volontaire,En cours
+5,2025-02-28,Nice,Coups et blessures,Clôturé
+6,2025-03-05,Toulouse,Cambriolage,En cours
+7,2025-02-25,Strasbourg,Accident de la route,En enquête
+8,2025-03-12,Montpellier,Enlèvement,En cours
+9,2025-01-30,Grenoble,Chantage,Clôturé
+10,2025-03-08,Nantes,Trafic de drogue,En enquête
