@@ -1,10 +1,10 @@
-1,Empreinte digitale,Trouvée sur l'arme correspondant à un criminel connu
-2,Enregistrement vidéo,Capturé près de la scène du crime montrant le suspect entrant dans le bâtiment
-3,Échantillon d'ADN,Correspondant au suspect prélevé sur un vêtement laissé sur les lieux
-4,Arme,Retrouvée dans le véhicule du suspect enregistrée à son nom
-5,Document,Faux contrat utilisé dans l'escroquerie contenant la signature du suspect
-6,Enregistrements téléphoniques,Liant le suspect à la victime montrant plusieurs appels passés avant le crime
-7,Enregistrement de sécurité,Montrant les actions du suspect capturé en train de manipuler les caméras de sécurité
-8,Échantillon de sang,Correspondant à la victime trouvé sur les vêtements du suspect
-9,Objets volés,Récupérés dans la résidence du suspect incluant des bijoux et des appareils électroniques signalés volés
-10,Indice anonyme,Fournissant des détails sur le crime menant à la découverte de preuves cruciales
+1,Empreinte digitale,Trouvée sur l arme correspondant a un criminel connu
+2,Enregistrement video,Capture pres de la scene du crime montrant le suspect entrant dans le batiment
+3,Echantillon d ADN,Correspondant au suspect preleve sur un vetement laisse sur les lieux
+4,Arme,Retrouvee dans le véhicule du suspect enregistree a son nom
+5,Document,Faux contrat utilise dans lescroquerie contenant la signature du suspect
+6,Enregistrements telephoniques,Liant le suspect à la victime montrant plusieurs appels passés avant le crime
+7,Enregistrement de securité,Montrant les actions du suspect capture en train de manipuler les cameras de securite
+8,Echantillon de sang,Correspondant a la victime trouve sur les vetements du suspect
+9,Objets voles,Récupérés dans la residence du suspect incluant des bijoux et des appareils electroniques signales voles
+10,Indice anonyme,Fournissant des details sur le crime menant à la decouverte de preuves cruciales

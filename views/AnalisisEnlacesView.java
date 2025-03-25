@@ -1,6 +1,6 @@
 package views;
 
-import com.mxgraph.layout.mxCompactTreeLayout;
+import com.mxgraph.layout.mxCircleLayout;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
@@ -15,115 +15,107 @@ import models.Temoins;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
+import java.util.Arrays;
 import java.util.List;
 
 public class AnalisisEnlacesView extends JFrame {
+
     private AffaireController affaireController;
     private SuspectController suspectController;
     private TemoinsController temoinsController;
     private PreuveController preuveController;
 
-    public AnalisisEnlacesView(AffaireController affaireController, SuspectController suspectController, TemoinsController temoinsController, PreuveController preuveController) {
+    public AnalisisEnlacesView(AffaireController affaireController, SuspectController suspectController,
+                                TemoinsController temoinsController, PreuveController preuveController) {
         this.affaireController = affaireController;
         this.suspectController = suspectController;
         this.temoinsController = temoinsController;
         this.preuveController = preuveController;
 
-        // Crear un grafo
         mxGraph graph = new mxGraph();
         Object parent = graph.getDefaultParent();
 
-        // Agregar nodos al grafo
         graph.getModel().beginUpdate();
         try {
             List<Suspect> suspects = suspectController.obtenerSuspects();
             List<Temoins> temoins = temoinsController.obtenerTemoins();
             List<Preuve> preuves = preuveController.obtenerPreuves();
 
-            int x = 20;
-            int y = 20;
-            int ancho = 80;
-            int alto = 30;
-
-            for (Suspect suspect : suspects) {
-                graph.insertVertex(parent, null, suspect.getNombre(), x, y, ancho, alto);
-                x += ancho + 10; // Ajusta la posición x para el siguiente nodo
-                if (x > 700) { // Ajusta para que no se salga de la ventana
-                    x = 20;
-                    y += alto + 10; // Pasa a la siguiente fila
-                }
+            // Crear nodos
+            Object[] suspectNodes = new Object[suspects.size()];
+            for (int i = 0; i < suspects.size(); i++) {
+                Suspect suspect = suspects.get(i);
+                suspectNodes[i] = graph.insertVertex(parent, null, suspect.getNombre(), 0, 0, 80, 30);
             }
 
-            // Reiniciar posición para testigos
-            x = 20;
-            y += alto + 20; // Salto entre secciones
-
-            for (Temoins temoins1 : temoins) {
-                graph.insertVertex(parent, null, temoins1.getNombre(), x, y, ancho, alto);
-                x += ancho + 10; // Ajusta la posición x para el siguiente nodo
-                if (x > 700) { // Ajusta para que no se salga de la ventana
-                    x = 20;
-                    y += alto + 10; // Pasa a la siguiente fila
-                }
+            Object[] temoinsNodes = new Object[temoins.size()];
+            for (int i = 0; i < temoins.size(); i++) {
+                Temoins temoins1 = temoins.get(i);
+                temoinsNodes[i] = graph.insertVertex(parent, null, temoins1.getNombre(), 0, 0, 80, 30);
             }
 
-            // Reiniciar posición para pruebas
-            x = 20;
-            y += alto + 20; // Salto entre secciones
-
-            for (Preuve preuve : preuves) {
-                graph.insertVertex(parent, null, preuve.getTipo(), x, y, ancho, alto);
-                x += ancho + 10; // Ajusta la posición x para el siguiente nodo
-                if (x > 700) { // Ajusta para que no se salga de la ventana
-                    x = 20;
-                    y += alto + 10; // Pasa a la siguiente fila
-                }
+            Object[] preuvesNodes = new Object[preuves.size()];
+            for (int i = 0; i < preuves.size(); i++) {
+                Preuve preuve = preuves.get(i);
+                preuvesNodes[i] = graph.insertVertex(parent, null, preuve.getTipo(), 0, 0, 80, 30);
             }
 
-            // Agregar aristas según las conexiones
-            for (Object cell1 : graph.getChildCells(parent)) {
-                for (Object cell2 : graph.getChildCells(parent)) {
-                    if (cell1 != cell2) {
-                        String texto1 = (String) graph.getModel().getValue(cell1);
-                        String texto2 = (String) graph.getModel().getValue(cell2);
-
-                        // Buscar similitudes entre los textos
-                        if (tieneSimilitudes(texto1, texto2)) {
-                            graph.insertEdge(parent, null, "Conexión", cell1, cell2);
-                        }
+            // Crear aristas basadas en relaciones textuales
+            for (int i = 0; i < suspects.size(); i++) {
+                Suspect suspect = suspects.get(i);
+                for (int j = 0; j < temoins.size(); j++) {
+                    Temoins temoins1 = temoins.get(j);
+                    if (tieneSimilitudes(suspect.getNombre(), temoins1.getDeclaracion()) ||
+                            tieneSimilitudes(suspect.getHistorial(), temoins1.getDeclaracion())) {
+                        graph.insertEdge(parent, null, "Suspect-Temoins", suspectNodes[i], temoinsNodes[j]);
+                    }
+                }
+                for (int k = 0; k < preuves.size(); k++) {
+                    Preuve preuve = preuves.get(k);
+                    if (tieneSimilitudes(suspect.getNombre(), preuve.getDescripcion()) ||
+                            tieneSimilitudes(suspect.getNombre(), preuve.getTipo()) ||
+                            tieneSimilitudes(suspect.getHistorial(), preuve.getDescripcion())) {
+                        graph.insertEdge(parent, null, "Suspect-Preuve", suspectNodes[i], preuvesNodes[k]);
                     }
                 }
             }
+        
         } finally {
             graph.getModel().endUpdate();
         }
 
-        // Visualizar el grafo
+        // Layout
+        mxCircleLayout layout = new mxCircleLayout(graph);
+        layout.setRadius(200); //Ajusta el radio del círculo
+        layout.setDisableEdgeStyle(false);
+        layout.execute(parent);
+
         mxGraphComponent graphComponent = new mxGraphComponent(graph);
-        add(graphComponent);
+        getContentPane().add(graphComponent);
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
 
     private boolean tieneSimilitudes(String texto1, String texto2) {
-        // Implementar lógica para buscar similitudes entre los textos
-        // Por ejemplo, buscar palabras comunes
-        String[] palabras1 = texto1.split("\\s+");
-        String[] palabras2 = texto2.split("\\s+");
+        if (texto1 == null || texto2 == null) {
+            return false;
+        }
 
-        for (String palabra1 : palabras1) {
-            for (String palabra2 : palabras2) {
-                if (palabra1.equalsIgnoreCase(palabra2)) {
-                    return true;
-                }
+        String[] palabras1 = texto1.toLowerCase().split("\\s+");
+        String[] palabras2 = texto2.toLowerCase().split("\\s+");
+        List<String> list1 = Arrays.asList(palabras1);
+        List<String> list2 = Arrays.asList(palabras2);
+
+        for (String palabra1 : list1) {
+            if (list2.contains(palabra1)) {
+                return true;
             }
         }
         return false;
     }
 }
+
+
 
 
