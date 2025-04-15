@@ -1,10 +1,18 @@
-1,Jean Dupont,35,Antécédents de vols à main armée
-2,Sophie Martin,28,Aucun casier judiciaire mais soupçonnée de proximité avec des individus dangereux
-3,Michel Leroy,40,Histoire de fraude financière plusieurs pseudonymes utilisés
-4,Sarah Laurent,22,Liée à un cas d'incendie criminel achat récent de produits inflammables
-5,David Moreau,50,Membre connu d'un gang de rue impliqué dans des crimes violents
-6,Émilie Garnier,33,Aucun casier judiciaire mais accès à des produits chimiques dangereux en tant que chimiste
-7,Jacques Durand,45,Antécédents d'agression physique plusieurs condamnations pour bagarres en bar
-8,Linda Rousseau,29,Aucun casier judiciaire mais héritière récente d'une somme importante sous conditions suspectes
-9,Robert Marchand,38,Antécédents de cambriolage spécialiste du désamorçage des systèmes de sécurité avancés
-10,Anne-Marie Petit,31,Aucun casier judiciaire mais disparue et soupçonnée dans un cas d'enlèvement
+1,Jean Dupont,34,Antecedents de vol a main armee a Paris
+2,Marie Lefevre,29,Impliquee dans une escroquerie a Marseille
+3,Paul Martin,41,Condamne pour meurtre a Lyon en 2022
+4,Lucie Bernard,27,Presente lors d un incendie volontaire a Bordeaux
+5,Antoine Petit,38,Connu pour trafic de drogue a Toulouse
+6,Claire Dubois,31,Vol de voiture a Strasbourg en 2023
+7,Julien Morel,36,Vol a la tire a Montpellier
+8,Isabelle Laurent,28,Escroquerie a Rennes
+9,Marc Girard,45,Enlevement a Nice en 2024
+10,Emma Robert,33,Incendie volontaire a Lille
+11,Thomas Richard,39,Vol a main armee a Marseille
+12,Julie Simon,26,Trafic de drogue a Bordeaux
+13,Alexandre Henry,42,Meurtre a Nice
+14,Charlotte Faure,30,Vol de voiture a Toulouse
+15,Victor Leroy,37,Escroquerie a Strasbourg
+16,Sophie Gauthier,32,Vol a la tire a Nantes
+17,Lucas Mercier,35,Enlevement a Paris
+18,Amelie Blanc,29,Impliquee dans un incendie volontaire a Lille

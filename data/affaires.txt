@@ -1,10 +1,18 @@
-1,2025-03-01,Paris,Vol,En cours
-2,2025-02-15,Lyon,Meurtre,Clôturé
-3,2025-01-20,Marseille,Fraude,En enquête
-4,2025-03-10,Bordeaux,Incendie volontaire,En cours
-5,2025-02-28,Nice,Coups et blessures,Clôturé
-6,2025-03-05,Toulouse,Cambriolage,En cours
-7,2025-02-25,Strasbourg,Accident de la route,En enquête
-8,2025-03-12,Montpellier,Enlèvement,En cours
-9,2025-01-30,Grenoble,Chantage,Clôturé
-10,2025-03-08,Nantes,Trafic de drogue,En enquête
+1,2024-01-10,Paris,Vol a main armee,En cours
+2,2024-02-15,Lyon,Meurtre,Cloture
+3,2024-03-20,Marseille,Escroquerie,En enquete
+4,2024-04-05,Bordeaux,Incendie volontaire,En cours
+5,2024-05-12,Nice,Enlevement,En cours
+6,2024-06-18,Toulouse,Trafic de drogue,Cloture
+7,2024-07-22,Strasbourg,Vol de voiture,En cours
+8,2024-08-30,Nantes,Meurtre,En enquete
+9,2024-09-14,Montpellier,Vol a la tire,En cours
+10,2024-10-01,Rennes,Escroquerie,Cloture
+11,2024-10-15,Paris,Enlevement,En cours
+12,2024-11-03,Lille,Incendie volontaire,En enquete
+13,2024-11-20,Marseille,Vol a main armee,Cloture
+14,2024-12-05,Bordeaux,Trafic de drogue,En cours
+15,2024-12-18,Nice,Meurtre,En enquete
+16,2025-01-10,Toulouse,Vol de voiture,En cours
+17,2025-01-25,Strasbourg,Escroquerie,Cloture
+18,2025-02-14,Nantes,Vol a la tire,En cours
