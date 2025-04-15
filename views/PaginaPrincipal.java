@@ -14,7 +14,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,6 +25,8 @@ public class PaginaPrincipal extends JFrame {
     private TemoinsController temoinsController;
     private PreuveController preuveController;
     private JTable tablaResultados;
+    private JTable tablaResueltos;
+    private DefaultTableModel modelResueltos;
     private AffaireRelation relationManager = new AffaireRelation();
 
     public PaginaPrincipal(AffaireController affaireController, SuspectController suspectController,
@@ -33,92 +35,101 @@ public class PaginaPrincipal extends JFrame {
         this.suspectController = suspectController;
         this.temoinsController = temoinsController;
         this.preuveController = preuveController;
-        setSize(1000, 600);
+        setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        initUI();
+    }
 
-        // Barra de menú (igual que antes)
+    private void initUI() {
+        // Configuración de la barra de menú
         JMenuBar menuBar = new JMenuBar();
-        JMenu modeloMenu = new JMenu("Modelos");
-        JMenuItem affaireItem = new JMenuItem("Affaires");
-        affaireItem.addActionListener(e -> new AffaireView(affaireController));
-        modeloMenu.add(affaireItem);
-
-        JMenuItem suspectItem = new JMenuItem("Suspects");
-        suspectItem.addActionListener(e -> new SuspectView(suspectController));
-        modeloMenu.add(suspectItem);
-
-        JMenuItem temoinsItem = new JMenuItem("Testigos");
-        temoinsItem.addActionListener(e -> new TemoinsView(temoinsController));
-        modeloMenu.add(temoinsItem);
-
-        JMenuItem preuveItem = new JMenuItem("Pruebas");
-        preuveItem.addActionListener(e -> new PreuveView(preuveController));
-        modeloMenu.add(preuveItem);
-
-        menuBar.add(modeloMenu);
-
-        JMenu funcionalidadesMenu = new JMenu("Funcionalidades");
-        JMenuItem busquedaAvanzadaItem = new JMenuItem("Busqueda Avanzada");
-        busquedaAvanzadaItem.addActionListener(e -> new BusquedaAvanzadaView(affaireController));
-        funcionalidadesMenu.add(busquedaAvanzadaItem);
-
-        JMenuItem analisisEnlacesItem = new JMenuItem("Analisis de Enlaces");
-        analisisEnlacesItem.addActionListener(e -> new AnalisisEnlacesView(affaireController, suspectController, temoinsController, preuveController));
-        funcionalidadesMenu.add(analisisEnlacesItem);
-
-        menuBar.add(funcionalidadesMenu);
-
+        configurarMenu(menuBar);
         setJMenuBar(menuBar);
 
-        // Panel principal
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        // Panel principal dividido
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        splitPane.setDividerLocation(400);
 
-        // Boton para generar correspondencias
+        // Panel superior (casos abiertos)
+        JPanel openPanel = new JPanel(new BorderLayout());
+        tablaResultados = new JTable();
+        openPanel.add(new JScrollPane(tablaResultados), BorderLayout.CENTER);
+
+        // Panel inferior (casos resueltos)
+        JPanel resolvedPanel = new JPanel(new BorderLayout());
+        modelResueltos = new DefaultTableModel(
+            new String[]{"ID Affaire", "Culpable", "Pruebas", "Testimonios", "Fecha Resolucion"}, 0
+        );
+        tablaResueltos = new JTable(modelResueltos);
+        resolvedPanel.add(new JLabel("Casos Resueltos"), BorderLayout.NORTH);
+        resolvedPanel.add(new JScrollPane(tablaResueltos), BorderLayout.CENTER);
+
+        splitPane.setTopComponent(openPanel);
+        splitPane.setBottomComponent(resolvedPanel);
+
+        // Botón de generación
         JButton btnGenerar = new JButton("Generar correspondencias");
         btnGenerar.addActionListener(e -> generarYMostrarCorrespondencias());
 
         JPanel topPanel = new JPanel();
         topPanel.add(btnGenerar);
 
-        // Tabla de resultados
-        tablaResultados = new JTable();
-        JScrollPane scrollPane = new JScrollPane(tablaResultados);
+        // Layout final
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(topPanel, BorderLayout.NORTH);
+        getContentPane().add(splitPane, BorderLayout.CENTER);
 
-        mainPanel.add(topPanel, BorderLayout.NORTH);
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
-
-        setContentPane(mainPanel);
         setVisible(true);
     }
 
-    private void generarYMostrarCorrespondencias() {
-        relationManager = new AffaireRelation();
+    private void configurarMenu(JMenuBar menuBar) {
+        // Menú Modelos
+        JMenu modeloMenu = new JMenu("Modelos");
+        modeloMenu.add(crearMenuItem("Affaires", () -> new AffaireView(affaireController)));
+        modeloMenu.add(crearMenuItem("Suspects", () -> new SuspectView(suspectController)));
+        modeloMenu.add(crearMenuItem("Testigos", () -> new TemoinsView(temoinsController)));
+        modeloMenu.add(crearMenuItem("Pruebas", () -> new PreuveView(preuveController)));
 
+        // Menú Funcionalidades
+        JMenu funcMenu = new JMenu("Funcionalidades");
+        funcMenu.add(crearMenuItem("Busqueda Avanzada", () -> new BusquedaAvanzadaView(affaireController)));
+        funcMenu.add(crearMenuItem("Analisis de Enlaces", () ->
+            new AnalisisEnlacesView(affaireController, suspectController, temoinsController, preuveController)));
+
+        menuBar.add(modeloMenu);
+        menuBar.add(funcMenu);
+    }
+
+    private JMenuItem crearMenuItem(String texto, Runnable accion) {
+        JMenuItem item = new JMenuItem(texto);
+        item.addActionListener(e -> accion.run());
+        return item;
+    }
+
+    private void generarYMostrarCorrespondencias() {
+        // ¡NO reinicialices relationManager aquí!
         List<Affaire> affaires = affaireController.obtenerAffaires();
         List<Temoins> temoins = temoinsController.obtenerTemoins();
         List<Preuve> preuves = preuveController.obtenerPreuves();
         List<Suspect> suspects = suspectController.obtenerSuspects();
 
+        
         affaires.forEach(relationManager::addAffaire);
         relationManager.generarRelaciones(temoins, preuves, suspects);
 
-        // Modelo de tabla con columna de boton
+        // Configurar modelo para casos abiertos
         DefaultTableModel model = new DefaultTableModel(
-            new String[]{"ID Affaire", "Ubicacion", "Tipo Delito", "Temoins", "Preuves", "Suspects (palabras clave)", "Informe"}, 0
+            new String[]{"ID Affaire", "Ubicacion", "Tipo Delito", "Testigos", "Pruebas", "Sospechosos", "Accion"}, 0
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 6; // Solo la columna del boton es editable
+                return column == 6;
             }
         };
 
-        List<Integer> affaireIds = new ArrayList<>(relationManager.getRelations().keySet());
-        for (Integer id : affaireIds) {
-            AffaireRelation.AffaireData data = relationManager.getRelations().get(id);
-
-            // Suspects con palabras clave
-            String suspectsStr = data.suspects.entrySet().stream()
-                .map(e -> e.getKey() + " (" + String.join(" ", e.getValue()) + ")")
+        relationManager.getOpenCases().forEach((id, data) -> {
+            String suspectsStr = data.suspects.keySet().stream()
+                .map(s -> s + " (" + String.join(" ", data.suspects.get(s)) + ")")
                 .collect(Collectors.joining(", "));
 
             model.addRow(new Object[]{
@@ -128,74 +139,131 @@ public class PaginaPrincipal extends JFrame {
                 String.join(", ", data.temoins),
                 String.join(", ", data.preuves),
                 suspectsStr,
-                "Ver informe"
+                "Resolver caso"
             });
-        }
+        });
 
         tablaResultados.setModel(model);
-
-        // Renderizador y editor para el boton
-        tablaResultados.getColumn("Informe").setCellRenderer(new ButtonRenderer());
-        tablaResultados.getColumn("Informe").setCellEditor(new ButtonEditor(new JCheckBox(), affaireIds, relationManager));
+        tablaResultados.getColumn("Accion").setCellRenderer(new ButtonRenderer());
+        tablaResultados.getColumn("Accion").setCellEditor(new ButtonEditor(new JCheckBox()));
+        actualizarTablas();
     }
 
-    // Renderizador de boton
+    private void actualizarTablas() {
+        // Actualizar casos resueltos
+        modelResueltos.setRowCount(0);
+        relationManager.getResolvedCases().forEach((id, data) -> {
+            modelResueltos.addRow(new Object[]{
+                id,
+                data.guiltySuspect,
+                String.join(", ", data.preuves),
+                String.join(", ", data.temoins),
+                new java.util.Date().toString()
+            });
+        });
+    }
+
+    // Clases internas para el renderizado y edición de botones
     static class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer() { setOpaque(true); }
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            setText((value == null) ? "Ver informe" : value.toString());
+
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                                                      boolean isSelected, boolean hasFocus, int row, int column) {
+            setText(value == null ? "" : value.toString());
             return this;
         }
     }
 
-    // Editor de boton
-    static class ButtonEditor extends DefaultCellEditor {
+    class ButtonEditor extends DefaultCellEditor {
         private JButton button;
-        private String label;
-        private boolean isPushed;
-        private List<Integer> affaireIds;
-        private AffaireRelation relationManager;
         private int currentRow;
+        private int affaireId;
 
-        public ButtonEditor(JCheckBox checkBox, List<Integer> affaireIds, AffaireRelation relationManager) {
+        public ButtonEditor(JCheckBox checkBox) {
             super(checkBox);
-            this.affaireIds = affaireIds;
-            this.relationManager = relationManager;
             button = new JButton();
             button.setOpaque(true);
             button.addActionListener(e -> fireEditingStopped());
         }
 
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-            label = (value == null) ? "Ver informe" : value.toString();
-            button.setText(label);
-            isPushed = true;
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                                                     boolean isSelected, int row, int column) {
             currentRow = row;
+            affaireId = (int) table.getValueAt(row, 0);
+            button.setText("Resolver caso");
             return button;
         }
 
         public Object getCellEditorValue() {
-            if (isPushed) {
-                int affaireId = affaireIds.get(currentRow);
-                AffaireRelation.AffaireData data = relationManager.getRelations().get(affaireId);
-                StringBuilder sb = new StringBuilder();
-                sb.append("Affaire ID: ").append(affaireId).append("\n");
-                sb.append("Ubicacion: ").append(data.ubicacion).append("\n");
-                sb.append("Tipo Delito: ").append(data.tipoDelito).append("\n");
-                sb.append("Fecha: ").append(data.fecha).append("\n\n");
-                sb.append("Temoins:\n");
-                data.temoins.forEach(t -> sb.append("  - ").append(t).append("\n"));
-                sb.append("Preuves:\n");
-                data.preuves.forEach(p -> sb.append("  - ").append(p).append("\n"));
-                sb.append("Suspects:\n");
-                data.suspects.forEach((s, palabras) -> sb.append("  - ").append(s).append(" (palabras clave: ").append(String.join(" ", palabras)).append(")\n"));
-                JOptionPane.showMessageDialog(button, sb.toString(), "Informe detallado", JOptionPane.INFORMATION_MESSAGE);
+            AffaireRelation.AffaireData data = relationManager.getOpenCases().get(affaireId);
+
+            JDialog dialog = new JDialog();
+            dialog.setLayout(new BorderLayout());
+            dialog.setSize(600, 500);
+
+            // Panel de detalles
+            JTextArea details = new JTextArea(construirDetalles(data));
+            details.setEditable(false);
+
+            // Selector de culpable y palabras clave
+            JComboBox<String> combo = new JComboBox<>(data.suspects.keySet().toArray(new String[0]));
+            JTextArea keywordsArea = new JTextArea();
+            keywordsArea.setEditable(false);
+
+            combo.addItemListener(e -> {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String selected = (String) e.getItem();
+                    keywordsArea.setText("Palabras clave: " +
+                            String.join(", ", data.suspects.get(selected)));
+                }
+            });
+
+            // Selección inicial
+            if (combo.getItemCount() > 0) {
+                combo.setSelectedIndex(0);
+                keywordsArea.setText("Palabras clave: " +
+                        String.join(", ", data.suspects.get(combo.getSelectedItem())));
             }
-            isPushed = false;
-            return label;
+
+            JPanel controls = new JPanel(new BorderLayout());
+            JPanel comboPanel = new JPanel(new FlowLayout());
+            comboPanel.add(new JLabel("Sospechoso culpable:"));
+            comboPanel.add(combo);
+            controls.add(comboPanel, BorderLayout.NORTH);
+            controls.add(new JScrollPane(keywordsArea), BorderLayout.CENTER);
+
+            JButton resolverBtn = new JButton("Confirmar resolución");
+            resolverBtn.addActionListener(e -> {
+                String culpable = (String) combo.getSelectedItem();
+                relationManager.resolverCaso(affaireId, culpable);
+                actualizarTablas();
+                generarYMostrarCorrespondencias();
+                dialog.dispose();
+            });
+            controls.add(resolverBtn, BorderLayout.SOUTH);
+
+            dialog.add(new JScrollPane(details), BorderLayout.CENTER);
+            dialog.add(controls, BorderLayout.SOUTH);
+            dialog.setLocationRelativeTo(button);
+            dialog.setVisible(true);
+
+            return "Resuelto";
+        }
+
+        private String construirDetalles(AffaireRelation.AffaireData data) {
+            return String.format(
+                    "Ubicacion: %s\nTipo de delito: %s\nFecha: %s\n\nTestigos:\n- %s\n\nPruebas:\n- %s",
+                    data.ubicacion,
+                    data.tipoDelito,
+                    data.fecha,
+                    String.join("\n- ", data.temoins),
+                    String.join("\n- ", data.preuves)
+            );
         }
     }
 }
+
+
 
 
 
