@@ -92,9 +92,11 @@ public class PaginaPrincipal extends JFrame {
 
         // Menú Funcionalidades
         JMenu funcMenu = new JMenu("Funcionalidades");
+        funcMenu.add(crearMenuItem("Analyse des Liens", () -> 
+        new AnalyseLiensView(suspectController, temoinsController, preuveController)));
         funcMenu.add(crearMenuItem("Busqueda Avanzada", () -> new BusquedaAvanzadaView(affaireController)));
         funcMenu.add(crearMenuItem("Analisis de Enlaces", () ->
-            new AnalisisEnlacesView(affaireController, suspectController, temoinsController, preuveController)));
+            new AnalisisEnlacesView(suspectController, temoinsController, preuveController)));
 
         menuBar.add(modeloMenu);
         menuBar.add(funcMenu);
