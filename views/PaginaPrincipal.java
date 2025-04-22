@@ -28,18 +28,22 @@ public class PaginaPrincipal extends JFrame {
     private JTable tablaResueltos;
     private DefaultTableModel modelResueltos;
     private AffaireRelation relationManager = new AffaireRelation();
+    private String userRole;
 
     public PaginaPrincipal(AffaireController affaireController, SuspectController suspectController,
-                           TemoinsController temoinsController, PreuveController preuveController) {
+                           TemoinsController temoinsController, PreuveController preuveController,String userRole) {
         this.affaireController = affaireController;
         this.suspectController = suspectController;
         this.temoinsController = temoinsController;
         this.preuveController = preuveController;
+        this.userRole = userRole;
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initUI();
+        configurarAccesosSegunRol();
+        setVisible(true);
     }
-
+    
     private void initUI() {
         // Configuración de la barra de menú
         JMenuBar menuBar = new JMenuBar();
@@ -81,10 +85,46 @@ public class PaginaPrincipal extends JFrame {
 
         setVisible(true);
     }
+    private void configurarAccesosSegunRol() {
+        // Añadir label de estado
+        JLabel lblEstado = new JLabel("Conectado como: " + 
+            (userRole.equals("admin") ? "Administrador" : "Oficial"));
+        lblEstado.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        
+        JPanel panelSuperior = new JPanel(new BorderLayout());
+        panelSuperior.add(lblEstado, BorderLayout.EAST);
+        getContentPane().add(panelSuperior, BorderLayout.NORTH);
 
+        // Deshabilitar funcionalidades para oficiales
+        if(!userRole.equals("admin")) {
+            deshabilitarFuncionalidadesEdicion();
+        }
+    }
+
+    private void deshabilitarFuncionalidadesEdicion() {
+        // Deshabilitar botones de acción
+        Component[] componentes = getContentPane().getComponents();
+        for(Component comp : componentes) {
+            if(comp instanceof JButton) {
+                ((JButton)comp).setEnabled(false);
+            }
+        }
+
+        // Deshabilitar menús sensibles
+        JMenuBar menuBar = getJMenuBar();
+        for(int i=0; i<menuBar.getMenuCount(); i++) {
+            JMenu menu = menuBar.getMenu(i);
+            if(menu.getText().equals("Modelos") || 
+               menu.getText().equals("Análisis Avanzado")) {
+                menu.setEnabled(false);
+            }
+        }
+    }
+    
     private void configurarMenu(JMenuBar menuBar) {
         // Menú Modelos
         JMenu modeloMenu = new JMenu("Modelos");
+        modeloMenu.setEnabled(userRole.equals("admin"));
         modeloMenu.add(crearMenuItem("Affaires", () -> new AffaireView(affaireController)));
         modeloMenu.add(crearMenuItem("Suspects", () -> new SuspectView(suspectController)));
         modeloMenu.add(crearMenuItem("Testigos", () -> new TemoinsView(temoinsController)));
@@ -97,9 +137,14 @@ public class PaginaPrincipal extends JFrame {
         funcMenu.add(crearMenuItem("Busqueda Avanzada", () -> new BusquedaAvanzadaView(affaireController)));
         funcMenu.add(crearMenuItem("Analisis de Enlaces", () ->
             new AnalisisEnlacesView(suspectController, temoinsController, preuveController)));
+        
+        JMenu analisisMenu = new JMenu("Análisis Avanzado");
+        analisisMenu.add(crearMenuItem("Priorización de Suspects", () -> 
+            new PriorizacionSuspectsView(affaireController, suspectController)));
 
         menuBar.add(modeloMenu);
         menuBar.add(funcMenu);
+        menuBar.add(analisisMenu);
     }
 
     private JMenuItem crearMenuItem(String texto, Runnable accion) {
@@ -121,11 +166,11 @@ public class PaginaPrincipal extends JFrame {
 
         // Configurar modelo para casos abiertos
         DefaultTableModel model = new DefaultTableModel(
-            new String[]{"ID Affaire", "Ubicacion", "Tipo Delito", "Testigos", "Pruebas", "Sospechosos", "Accion"}, 0
-        ) {
+        new String[]{"ID Affaire", "Ubicacion", "Tipo Delito", "Testigos", "Pruebas", "Sospechosos", "Accion", "Resolver caso automáticamente"}, 0)
+        {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 6;
+                return column == 6 || column == 7; // Columnas editables: Accion y Resolver automático
             }
         };
 
@@ -141,13 +186,18 @@ public class PaginaPrincipal extends JFrame {
                 String.join(", ", data.temoins),
                 String.join(", ", data.preuves),
                 suspectsStr,
-                "Resolver caso"
+                "Resolver caso",
+                "Resolver caso automáticamente"
             });
         });
 
         tablaResultados.setModel(model);
         tablaResultados.getColumn("Accion").setCellRenderer(new ButtonRenderer());
         tablaResultados.getColumn("Accion").setCellEditor(new ButtonEditor(new JCheckBox()));
+        
+        tablaResultados.getColumn("Resolver caso automáticamente").setCellRenderer(new ButtonRenderer());
+        tablaResultados.getColumn("Resolver caso automáticamente").setCellEditor(new AutoResolverButtonEditor(new JCheckBox()));
+
         actualizarTablas();
     }
 
@@ -168,11 +218,91 @@ public class PaginaPrincipal extends JFrame {
     // Clases internas para el renderizado y edición de botones
     static class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer() { setOpaque(true); }
-
-        public Component getTableCellRendererComponent(JTable table, Object value,
-                                                      boolean isSelected, boolean hasFocus, int row, int column) {
-            setText(value == null ? "" : value.toString());
+        
+        public Component getTableCellRendererComponent(JTable table, Object value, 
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            setText(value.toString());
+            setBackground(column == 6 ? Color.LIGHT_GRAY : Color.ORANGE); // Color diferenciado
             return this;
+        }
+    }
+    class AutoResolverButtonEditor extends DefaultCellEditor {
+        private JButton button;
+        private int currentRow;
+    
+        public AutoResolverButtonEditor(JCheckBox checkBox) {
+            super(checkBox);
+            button = new JButton("Resolver caso automáticamente");
+            button.addActionListener(e -> resolverCasoAutomaticamente());
+        }
+    
+        public Component getTableCellEditorComponent(JTable table, Object value, 
+                boolean isSelected, int row, int column) {
+            currentRow = row;
+            return button;
+        }
+    
+        private void resolverCasoAutomaticamente() {
+
+            if(!userRole.equals("admin")) {
+                JOptionPane.showMessageDialog(button,
+                    "Acceso restringido: Solo administradores pueden resolver casos automáticamente",
+                    "Permiso denegado",
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            int affaireId = (int) tablaResultados.getValueAt(currentRow, 0);
+            
+            // Obtener suspect con máximo score
+            Suspect topSuspect = suspectController.obtenerSuspects().stream()
+                .max(Comparator.comparing(s -> calcularScore(
+                    affaireController.obtenerAffaire(affaireId).orElseThrow(),
+                    s
+                )))
+                .orElse(null);
+    
+            if(topSuspect != null) {
+                relationManager.resolverCaso(affaireId, topSuspect.getNombre());
+                ((DefaultTableModel)tablaResultados.getModel()).removeRow(currentRow);
+                actualizarTablas();
+                
+                JOptionPane.showMessageDialog(button,
+                    "Caso #" + affaireId + " resuelto automáticamente\n" +
+                    "Culpable: " + topSuspect.getNombre(),
+                    "Resolución Automática",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        }
+    
+        private int calcularScore(Affaire affaire, Suspect suspect) {
+            // Usar misma lógica de cálculo que en PriorizacionSuspectsView
+            int score = 0;
+            
+            // Coincidencias léxicas
+            Set<String> palabrasAffaire = relationManager.filtrarPalabras(
+                affaire.getUbicacion() + " " + affaire.getTipoDelito() + " " + affaire.getFecha()
+            );
+            Set<String> palabrasSuspect = relationManager.filtrarPalabras(
+                suspect.getNombre() + " " + suspect.getHistorial()
+            );
+            score += (int) palabrasAffaire.stream()
+                .filter(palabrasSuspect::contains)
+                .count() * 5;
+    
+            // Relaciones existentes
+            AffaireRelation.AffaireData data = relationManager.getOpenCases().get(affaire.getId());
+            if(data != null && data.suspects.containsKey(suspect.getNombre())) {
+                score += data.suspects.get(suspect.getNombre()).size() * 3;
+            }
+    
+            // Casos resueltos relacionados
+            score += relationManager.getResolvedCases().values().stream()
+                .filter(d -> d.guiltySuspect != null && d.guiltySuspect.equals(suspect.getNombre()))
+                .count() * 10;
+    
+            return score;
         }
     }
 
@@ -187,6 +317,7 @@ public class PaginaPrincipal extends JFrame {
             button.setOpaque(true);
             button.addActionListener(e -> fireEditingStopped());
         }
+        
 
         public Component getTableCellEditorComponent(JTable table, Object value,
                                                      boolean isSelected, int row, int column) {
@@ -197,6 +328,15 @@ public class PaginaPrincipal extends JFrame {
         }
 
         public Object getCellEditorValue() {
+
+            if(!userRole.equals("admin")) {
+                JOptionPane.showMessageDialog(button,
+                    "Acceso restringido: Solo administradores pueden resolver casos",
+                    "Permiso denegado",
+                    JOptionPane.WARNING_MESSAGE);
+                return "No autorizado";
+            }
+
             AffaireRelation.AffaireData data = relationManager.getOpenCases().get(affaireId);
 
             JDialog dialog = new JDialog();

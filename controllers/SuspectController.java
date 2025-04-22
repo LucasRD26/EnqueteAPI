@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 import models.Suspect;
@@ -82,5 +83,12 @@ public class SuspectController {
         }
         return resultados;
     }
+
+    public Optional<Suspect> obtenerSuspect(String nombre) {
+    return suspects.stream()
+        .filter(s -> s.getNombre().equals(nombre))
+        .findFirst();
+}
+
 }
 

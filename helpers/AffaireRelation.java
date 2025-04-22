@@ -104,7 +104,7 @@ public class AffaireRelation {
         return palabrasClave;
     }
 
-    private Set<String> filtrarPalabras(String texto) {
+    public Set<String> filtrarPalabras(String texto) {
         if (texto == null) return Set.of();
         return Arrays.stream(texto.toLowerCase().split("\\s+"))
             .filter(palabra -> !CONECTORES.contains(palabra))

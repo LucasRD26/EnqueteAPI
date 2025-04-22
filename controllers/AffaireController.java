@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 import models.Affaire;
@@ -84,5 +85,12 @@ public class AffaireController {
         }
         return resultados;
     }
+
+    public Optional<Affaire> obtenerAffaire(int id) {
+    return affaires.stream()
+        .filter(a -> a.getId() == id)
+        .findFirst();
+    }
+
 }
 
