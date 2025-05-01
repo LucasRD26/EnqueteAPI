@@ -62,17 +62,17 @@ public class PaginaPrincipal extends JFrame {
         // Panel inferior (casos resueltos)
         JPanel resolvedPanel = new JPanel(new BorderLayout());
         modelResueltos = new DefaultTableModel(
-            new String[]{"ID Affaire", "Culpable", "Pruebas", "Testimonios", "Fecha Resolucion"}, 0
+            new String[]{"ID Affaire", "Coupable", "Preuves", "Temoins", "Date Resolution"}, 0
         );
         tablaResueltos = new JTable(modelResueltos);
-        resolvedPanel.add(new JLabel("Casos Resueltos"), BorderLayout.NORTH);
+        resolvedPanel.add(new JLabel("Cas résolus"), BorderLayout.NORTH);
         resolvedPanel.add(new JScrollPane(tablaResueltos), BorderLayout.CENTER);
 
         splitPane.setTopComponent(openPanel);
         splitPane.setBottomComponent(resolvedPanel);
 
         // Botón de generación
-        JButton btnGenerar = new JButton("Generar correspondencias");
+        JButton btnGenerar = new JButton("Générer des correspondances");
         btnGenerar.addActionListener(e -> generarYMostrarCorrespondencias());
 
         JPanel topPanel = new JPanel();
@@ -87,8 +87,8 @@ public class PaginaPrincipal extends JFrame {
     }
     private void configurarAccesosSegunRol() {
         // Añadir label de estado
-        JLabel lblEstado = new JLabel("Conectado como: " + 
-            (userRole.equals("admin") ? "Administrador" : "Oficial"));
+        JLabel lblEstado = new JLabel("Connecté comme: " + 
+            (userRole.equals("admin") ? "Commissaire" : "Officiel"));
         lblEstado.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         
         JPanel panelSuperior = new JPanel(new BorderLayout());
@@ -114,8 +114,8 @@ public class PaginaPrincipal extends JFrame {
         JMenuBar menuBar = getJMenuBar();
         for(int i=0; i<menuBar.getMenuCount(); i++) {
             JMenu menu = menuBar.getMenu(i);
-            if(menu.getText().equals("Modelos") || 
-               menu.getText().equals("Análisis Avanzado")) {
+            if(menu.getText().equals("Modeles") || 
+               menu.getText().equals("Analyse Avancee ")) {
                 menu.setEnabled(false);
             }
         }
@@ -123,23 +123,23 @@ public class PaginaPrincipal extends JFrame {
     
     private void configurarMenu(JMenuBar menuBar) {
         // Menú Modelos
-        JMenu modeloMenu = new JMenu("Modelos");
+        JMenu modeloMenu = new JMenu("Modeles");
         modeloMenu.setEnabled(userRole.equals("admin"));
         modeloMenu.add(crearMenuItem("Affaires", () -> new AffaireView(affaireController)));
         modeloMenu.add(crearMenuItem("Suspects", () -> new SuspectView(suspectController)));
-        modeloMenu.add(crearMenuItem("Testigos", () -> new TemoinsView(temoinsController)));
-        modeloMenu.add(crearMenuItem("Pruebas", () -> new PreuveView(preuveController)));
+        modeloMenu.add(crearMenuItem("Temoins", () -> new TemoinsView(temoinsController)));
+        modeloMenu.add(crearMenuItem("Preuves", () -> new PreuveView(preuveController)));
 
         // Menú Funcionalidades
-        JMenu funcMenu = new JMenu("Funcionalidades");
+        JMenu funcMenu = new JMenu("Founctionnalites");
         funcMenu.add(crearMenuItem("Analyse des Liens", () -> 
         new AnalyseLiensView(suspectController, temoinsController, preuveController)));
-        funcMenu.add(crearMenuItem("Busqueda Avanzada", () -> new BusquedaAvanzadaView(affaireController)));
-        funcMenu.add(crearMenuItem("Analisis de Enlaces", () ->
+        funcMenu.add(crearMenuItem("Recherche des Affaires", () -> new BusquedaAvanzadaView(affaireController)));
+        funcMenu.add(crearMenuItem("Analyse entre Suspects", () ->
             new AnalisisEnlacesView(suspectController, temoinsController, preuveController)));
         
-        JMenu analisisMenu = new JMenu("Análisis Avanzado");
-        analisisMenu.add(crearMenuItem("Priorización de Suspects", () -> 
+        JMenu analisisMenu = new JMenu("Anályse Avancee");
+        analisisMenu.add(crearMenuItem("Priorisation des Suspects", () -> 
             new PriorizacionSuspectsView(affaireController, suspectController)));
 
         menuBar.add(modeloMenu);
@@ -166,7 +166,7 @@ public class PaginaPrincipal extends JFrame {
 
         // Configurar modelo para casos abiertos
         DefaultTableModel model = new DefaultTableModel(
-        new String[]{"ID Affaire", "Ubicacion", "Tipo Delito", "Testigos", "Pruebas", "Sospechosos", "Accion", "Resolver caso automáticamente"}, 0)
+        new String[]{"ID Affaire", "Lieu", "Type Crime", "Temoins", "Preuves", "Suspect", "Action", "Resoudre le cas automatiquement"}, 0)
         {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -186,17 +186,17 @@ public class PaginaPrincipal extends JFrame {
                 String.join(", ", data.temoins),
                 String.join(", ", data.preuves),
                 suspectsStr,
-                "Resolver caso",
-                "Resolver caso automáticamente"
+                "Resoudre cas",
+                "Resoudre cas automatiquement"
             });
         });
 
         tablaResultados.setModel(model);
-        tablaResultados.getColumn("Accion").setCellRenderer(new ButtonRenderer());
-        tablaResultados.getColumn("Accion").setCellEditor(new ButtonEditor(new JCheckBox()));
+        tablaResultados.getColumn("Action").setCellRenderer(new ButtonRenderer());
+        tablaResultados.getColumn("Action").setCellEditor(new ButtonEditor(new JCheckBox()));
         
-        tablaResultados.getColumn("Resolver caso automáticamente").setCellRenderer(new ButtonRenderer());
-        tablaResultados.getColumn("Resolver caso automáticamente").setCellEditor(new AutoResolverButtonEditor(new JCheckBox()));
+        tablaResultados.getColumn("Resoudre le cas automatiquement").setCellRenderer(new ButtonRenderer());
+        tablaResultados.getColumn("Resoudre le cas automatiquement").setCellEditor(new AutoResolverButtonEditor(new JCheckBox()));
 
         actualizarTablas();
     }
@@ -232,7 +232,7 @@ public class PaginaPrincipal extends JFrame {
     
         public AutoResolverButtonEditor(JCheckBox checkBox) {
             super(checkBox);
-            button = new JButton("Resolver caso automáticamente");
+            button = new JButton("Resoudre cas automatiquement");
             button.addActionListener(e -> resolverCasoAutomaticamente());
         }
     
@@ -246,8 +246,8 @@ public class PaginaPrincipal extends JFrame {
 
             if(!userRole.equals("admin")) {
                 JOptionPane.showMessageDialog(button,
-                    "Acceso restringido: Solo administradores pueden resolver casos automáticamente",
-                    "Permiso denegado",
+                    "Accès restreint : seuls les administrateurs peuvent résoudre automatiquement les cas",
+                    "autorisation refusée",
                     JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -268,9 +268,9 @@ public class PaginaPrincipal extends JFrame {
                 actualizarTablas();
                 
                 JOptionPane.showMessageDialog(button,
-                    "Caso #" + affaireId + " resuelto automáticamente\n" +
-                    "Culpable: " + topSuspect.getNombre(),
-                    "Resolución Automática",
+                    "Cas #" + affaireId + " résolu automatiquement\n" +
+                    "Coupable: " + topSuspect.getNombre(),
+                    "Résolution automatique",
                     JOptionPane.INFORMATION_MESSAGE
                 );
             }
@@ -323,7 +323,7 @@ public class PaginaPrincipal extends JFrame {
                                                      boolean isSelected, int row, int column) {
             currentRow = row;
             affaireId = (int) table.getValueAt(row, 0);
-            button.setText("Resolver caso");
+            button.setText("Résoudre le cas");
             return button;
         }
 
@@ -331,8 +331,8 @@ public class PaginaPrincipal extends JFrame {
 
             if(!userRole.equals("admin")) {
                 JOptionPane.showMessageDialog(button,
-                    "Acceso restringido: Solo administradores pueden resolver casos",
-                    "Permiso denegado",
+                    "Accès restreint : seuls les administrateurs peuvent résoudre les cas",
+                    "autorisation refusée",
                     JOptionPane.WARNING_MESSAGE);
                 return "No autorizado";
             }
@@ -355,7 +355,7 @@ public class PaginaPrincipal extends JFrame {
             combo.addItemListener(e -> {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     String selected = (String) e.getItem();
-                    keywordsArea.setText("Palabras clave: " +
+                    keywordsArea.setText("Mots-clés: " +
                             String.join(", ", data.suspects.get(selected)));
                 }
             });
@@ -363,18 +363,18 @@ public class PaginaPrincipal extends JFrame {
             // Selección inicial
             if (combo.getItemCount() > 0) {
                 combo.setSelectedIndex(0);
-                keywordsArea.setText("Palabras clave: " +
+                keywordsArea.setText("Mots-clés: " +
                         String.join(", ", data.suspects.get(combo.getSelectedItem())));
             }
 
             JPanel controls = new JPanel(new BorderLayout());
             JPanel comboPanel = new JPanel(new FlowLayout());
-            comboPanel.add(new JLabel("Sospechoso culpable:"));
+            comboPanel.add(new JLabel("Suspect coupable:"));
             comboPanel.add(combo);
             controls.add(comboPanel, BorderLayout.NORTH);
             controls.add(new JScrollPane(keywordsArea), BorderLayout.CENTER);
 
-            JButton resolverBtn = new JButton("Confirmar resolución");
+            JButton resolverBtn = new JButton("Confirmer la résolution");
             resolverBtn.addActionListener(e -> {
                 String culpable = (String) combo.getSelectedItem();
                 relationManager.resolverCaso(affaireId, culpable);
@@ -394,7 +394,7 @@ public class PaginaPrincipal extends JFrame {
 
         private String construirDetalles(AffaireRelation.AffaireData data) {
             return String.format(
-                    "Ubicacion: %s\nTipo de delito: %s\nFecha: %s\n\nTestigos:\n- %s\n\nPruebas:\n- %s",
+                    "Lieu: %s\nType de Crime: %s\nDate: %s\n\nTemoins:\n- %s\n\nPreuves:\n- %s",
                     data.ubicacion,
                     data.tipoDelito,
                     data.fecha,

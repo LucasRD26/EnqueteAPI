@@ -31,15 +31,15 @@ public class BusquedaAvanzadaView extends JFrame {
         // Tabla para mostrar resultados
         DefaultTableModel resultadosModel = new DefaultTableModel();
         resultadosModel.addColumn("ID");
-        resultadosModel.addColumn("Fecha");
-        resultadosModel.addColumn("Ubicación");
-        resultadosModel.addColumn("Tipo de Delito");
-        resultadosModel.addColumn("Estado del Caso");
+        resultadosModel.addColumn("Date");
+        resultadosModel.addColumn("Lieu");
+        resultadosModel.addColumn("Type de Crime");
+        resultadosModel.addColumn("Status Affaire");
 
         JTable resultadosTable = new JTable(resultadosModel);
 
         // Botón para buscar
-        JButton buscarButton = new JButton("Buscar");
+        JButton buscarButton = new JButton("Rechercher");
         buscarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,11 +64,11 @@ public class BusquedaAvanzadaView extends JFrame {
             }
         });
 
-        formularioPanel.add(new JLabel("Fecha:"));
+        formularioPanel.add(new JLabel("Date:"));
         formularioPanel.add(fechaField);
-        formularioPanel.add(new JLabel("Ubicación:"));
+        formularioPanel.add(new JLabel("Lieu:"));
         formularioPanel.add(ubicacionField);
-        formularioPanel.add(new JLabel("Tipo de Delito:"));
+        formularioPanel.add(new JLabel("Type de crime:"));
         formularioPanel.add(tipoDelitoField);
         formularioPanel.add(buscarButton);
 

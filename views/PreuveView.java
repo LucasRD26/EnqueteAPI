@@ -28,10 +28,10 @@ public class PreuveView extends JFrame {
         // Tabla para mostrar pruebas
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("ID");
-        model.addColumn("Tipo");
-        model.addColumn("Descripción");
-        model.addColumn("Actualizar");
-        model.addColumn("Eliminar");
+        model.addColumn("Type");
+        model.addColumn("Description");
+        model.addColumn("Actualiser");
+        model.addColumn("Eliminer");
 
         JTable table = new JTable(model);
         List<Preuve> preuves = controller.obtenerPreuves();
@@ -40,8 +40,8 @@ public class PreuveView extends JFrame {
                     preuve.getId(),
                     preuve.getTipo(),
                     preuve.getDescripcion(),
-                    "Actualizar",
-                    "Eliminar"
+                    "Actualiser",
+                    "Eliminer"
             });
         }
 
@@ -61,7 +61,7 @@ public class PreuveView extends JFrame {
         JTextField tipoField = new JTextField();
         JTextField descripcionField = new JTextField();
 
-        JButton agregarButton = new JButton("Agregar Prueba");
+        JButton agregarButton = new JButton("Ajouter Preuve");
         agregarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -76,15 +76,15 @@ public class PreuveView extends JFrame {
                         preuve.getId(),
                         preuve.getTipo(),
                         preuve.getDescripcion(),
-                        "Actualizar",
-                        "Eliminar"
+                        "Actualiser",
+                        "Eliminer"
                 });
             }
         });
 
-        nuevoPanel.add(new JLabel("Tipo:"));
+        nuevoPanel.add(new JLabel("Type:"));
         nuevoPanel.add(tipoField);
-        nuevoPanel.add(new JLabel("Descripción:"));
+        nuevoPanel.add(new JLabel("Description:"));
         nuevoPanel.add(descripcionField);
         nuevoPanel.add(agregarButton);
 

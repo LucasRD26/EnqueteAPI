@@ -27,7 +27,7 @@ public class LoginDialog extends JDialog {
         cs.fill = GridBagConstraints.HORIZONTAL;
 
         // Campo de usuario
-        lbUsername = new JLabel("Usuario: ");
+        lbUsername = new JLabel("User: ");
         cs.gridx = 0;
         cs.gridy = 0;
         cs.gridwidth = 1;
@@ -40,7 +40,7 @@ public class LoginDialog extends JDialog {
         panel.add(tfUsername, cs);
 
         // Campo de contraseña
-        lbPassword = new JLabel("Contraseña: ");
+        lbPassword = new JLabel("Mot de Passe: ");
         cs.gridx = 0;
         cs.gridy = 1;
         cs.gridwidth = 1;
@@ -58,7 +58,7 @@ public class LoginDialog extends JDialog {
         btnLogin = new JButton("Login");
         btnLogin.addActionListener(e -> authenticateUser());
         
-        btnCancel = new JButton("Cancelar");
+        btnCancel = new JButton("Annuler");
         btnCancel.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel();

@@ -33,7 +33,7 @@ public class AnalisisEnlacesView extends JFrame {
         this.temoinsController = temoinsController;
         this.preuveController = preuveController;
         
-        setTitle("Análisis de Enlaces entre Suspects");
+        setTitle("Liens entre Suspects");
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -42,7 +42,7 @@ public class AnalisisEnlacesView extends JFrame {
     }
 
     private void initUI() {
-        model = new DefaultTableModel(new Object[]{"Suspect", "Suspects Asociados", "Detalles"}, 0) {
+        model = new DefaultTableModel(new Object[]{"Suspect", "Suspects Associes", "Details"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return column == 2;
@@ -50,8 +50,8 @@ public class AnalisisEnlacesView extends JFrame {
         };
 
         tablaPrincipal = new JTable(model);
-        tablaPrincipal.getColumn("Detalles").setCellRenderer(new ButtonRenderer());
-        tablaPrincipal.getColumn("Detalles").setCellEditor(new ButtonEditor(new JCheckBox()));
+        tablaPrincipal.getColumn("Details").setCellRenderer(new ButtonRenderer());
+        tablaPrincipal.getColumn("Details").setCellEditor(new ButtonEditor(new JCheckBox()));
 
         JScrollPane scrollPane = new JScrollPane(tablaPrincipal);
         add(scrollPane, BorderLayout.CENTER);
@@ -112,7 +112,7 @@ public class AnalisisEnlacesView extends JFrame {
             model.addRow(new Object[]{
                 s1.getNombre(), 
                 String.join(", ", asociados.keySet()), 
-                "Ver detalles"
+                "Voir details"
             });
         }
     }
@@ -130,7 +130,7 @@ public class AnalisisEnlacesView extends JFrame {
         
         public Component getTableCellRendererComponent(JTable table, Object value, 
                 boolean isSelected, boolean hasFocus, int row, int column) {
-            setText("Ver detalles");
+            setText("Voir details");
             return this;
         }
     }
@@ -141,7 +141,7 @@ public class AnalisisEnlacesView extends JFrame {
 
         public ButtonEditor(JCheckBox checkBox) {
             super(checkBox);
-            button = new JButton("Ver detalles");
+            button = new JButton("Voir details");
             button.addActionListener(e -> mostrarDetalles());
         }
 
@@ -221,7 +221,7 @@ public class AnalisisEnlacesView extends JFrame {
                         Map<String, Set<String>> categorias = relaciones.get(asociado);
                         StringBuilder sb = new StringBuilder();
                         categorias.forEach((categoria, palabras) -> {
-                            sb.append("Relaciones por ")
+                            sb.append("Relations pour ")
                               .append(categoria.toUpperCase())
                               .append(":\n")
                               .append(String.join("\n", palabras))

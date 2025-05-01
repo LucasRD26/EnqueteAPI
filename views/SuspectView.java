@@ -28,11 +28,11 @@ public class SuspectView extends JFrame {
         // Tabla para mostrar suspects
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("ID");
-        model.addColumn("Nombre");
-        model.addColumn("Edad");
-        model.addColumn("Historial");
-        model.addColumn("Actualizar");
-        model.addColumn("Eliminar");
+        model.addColumn("Nom");
+        model.addColumn("Age");
+        model.addColumn("Antecedents");
+        model.addColumn("Actualiser");
+        model.addColumn("Eliminer");
 
         JTable table = new JTable(model);
         List<Suspect> suspects = controller.obtenerSuspects();
@@ -42,8 +42,8 @@ public class SuspectView extends JFrame {
                     suspect.getNombre(),
                     suspect.getEdad(),
                     suspect.getHistorial(),
-                    "Actualizar",
-                    "Eliminar"
+                    "Actualiser",
+                    "Eliminer"
             });
         }
 
@@ -64,7 +64,7 @@ public class SuspectView extends JFrame {
         JTextField edadField = new JTextField();
         JTextField historialField = new JTextField();
 
-        JButton agregarButton = new JButton("Agregar Suspect");
+        JButton agregarButton = new JButton("Ajouter Suspect");
         agregarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -81,17 +81,17 @@ public class SuspectView extends JFrame {
                         suspect.getNombre(),
                         suspect.getEdad(),
                         suspect.getHistorial(),
-                        "Actualizar",
-                        "Eliminar"
+                        "Actualiser",
+                        "Eliminer"
                 });
             }
         });
 
-        nuevoPanel.add(new JLabel("Nombre:"));
+        nuevoPanel.add(new JLabel("Nom:"));
         nuevoPanel.add(nombreField);
-        nuevoPanel.add(new JLabel("Edad:"));
+        nuevoPanel.add(new JLabel("Age:"));
         nuevoPanel.add(edadField);
-        nuevoPanel.add(new JLabel("Historial:"));
+        nuevoPanel.add(new JLabel("Antecedents:"));
         nuevoPanel.add(historialField);
         nuevoPanel.add(agregarButton);
 

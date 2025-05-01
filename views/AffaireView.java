@@ -28,12 +28,12 @@ public class AffaireView extends JFrame {
         // Tabla para mostrar affaires
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("ID");
-        model.addColumn("Fecha");
-        model.addColumn("Ubicación");
-        model.addColumn("Tipo de Delito");
-        model.addColumn("Estado del Caso");
-        model.addColumn("Actualizar");
-        model.addColumn("Eliminar");
+        model.addColumn("Date");
+        model.addColumn("Lieu");
+        model.addColumn("Type de crime");
+        model.addColumn("Status Affaire");
+        model.addColumn("Actualiser");
+        model.addColumn("Eliminer");
 
         JTable table = new JTable(model);
         List<Affaire> affaires = controller.obtenerAffaires();
@@ -44,8 +44,8 @@ public class AffaireView extends JFrame {
                     affaire.getUbicacion(),
                     affaire.getTipoDelito(),
                     affaire.getEstadoCaso(),
-                    "Actualizar",
-                    "Eliminar"
+                    "Actualiser",
+                    "Eliminer"
             });
         }
 
@@ -67,7 +67,7 @@ public class AffaireView extends JFrame {
         JTextField tipoDelitoField = new JTextField();
         JTextField estadoCasoField = new JTextField();
 
-        JButton agregarButton = new JButton("Agregar Affaire");
+        JButton agregarButton = new JButton("Ajouter Affaire");
         agregarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -86,19 +86,19 @@ public class AffaireView extends JFrame {
                         affaire.getUbicacion(),
                         affaire.getTipoDelito(),
                         affaire.getEstadoCaso(),
-                        "Actualizar",
-                        "Eliminar"
+                        "Actualiser",
+                        "Eliminer"
                 });
             }
         });
 
-        nuevoPanel.add(new JLabel("Fecha:"));
+        nuevoPanel.add(new JLabel("Date:"));
         nuevoPanel.add(fechaField);
-        nuevoPanel.add(new JLabel("Ubicación:"));
+        nuevoPanel.add(new JLabel("Lieu:"));
         nuevoPanel.add(ubicacionField);
-        nuevoPanel.add(new JLabel("Tipo de Delito:"));
+        nuevoPanel.add(new JLabel("Type de Crime:"));
         nuevoPanel.add(tipoDelitoField);
-        nuevoPanel.add(new JLabel("Estado del Caso:"));
+        nuevoPanel.add(new JLabel("Status Affaire:"));
         nuevoPanel.add(estadoCasoField);
         nuevoPanel.add(agregarButton);
 

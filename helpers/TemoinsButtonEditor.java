@@ -40,14 +40,14 @@ public class TemoinsButtonEditor extends DefaultCellEditor {
 
                     JPanel dialogPanel = new JPanel();
                     dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
-                    dialogPanel.add(new JLabel("Nombre:"));
+                    dialogPanel.add(new JLabel("Nom:"));
                     dialogPanel.add(nombreField);
-                    dialogPanel.add(new JLabel("Edad:"));
+                    dialogPanel.add(new JLabel("Age:"));
                     dialogPanel.add(edadField);
-                    dialogPanel.add(new JLabel("Declaración:"));
+                    dialogPanel.add(new JLabel("Declaration:"));
                     dialogPanel.add(declaracionField);
 
-                    int result = JOptionPane.showConfirmDialog(null, dialogPanel, "Editar Testigo", JOptionPane.OK_CANCEL_OPTION);
+                    int result = JOptionPane.showConfirmDialog(null, dialogPanel, "Modifier Temoin", JOptionPane.OK_CANCEL_OPTION);
                     if (result == JOptionPane.OK_OPTION) {
                         temoins.setNombre(nombreField.getText());
                         temoins.setEdad(Integer.parseInt(edadField.getText()));
@@ -73,7 +73,7 @@ public class TemoinsButtonEditor extends DefaultCellEditor {
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         if (value == null) {
-            button.setText("Actualizar");
+            button.setText("Actualiser");
         } else {
             button.setText((String) value);
         }

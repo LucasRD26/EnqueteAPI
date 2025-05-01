@@ -41,16 +41,16 @@ public class AffaireButtonEditor extends DefaultCellEditor {
 
                     JPanel dialogPanel = new JPanel();
                     dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
-                    dialogPanel.add(new JLabel("Fecha:"));
+                    dialogPanel.add(new JLabel("Date:"));
                     dialogPanel.add(fechaField);
-                    dialogPanel.add(new JLabel("Ubicación:"));
+                    dialogPanel.add(new JLabel("Lieu:"));
                     dialogPanel.add(ubicacionField);
-                    dialogPanel.add(new JLabel("Tipo de Delito:"));
+                    dialogPanel.add(new JLabel("Type de crime:"));
                     dialogPanel.add(tipoDelitoField);
-                    dialogPanel.add(new JLabel("Estado del Caso:"));
+                    dialogPanel.add(new JLabel("Statut de l'affaire:"));
                     dialogPanel.add(estadoCasoField);
 
-                    int result = JOptionPane.showConfirmDialog(null, dialogPanel, "Editar Affaire", JOptionPane.OK_CANCEL_OPTION);
+                    int result = JOptionPane.showConfirmDialog(null, dialogPanel, "Modifier Affaire", JOptionPane.OK_CANCEL_OPTION);
                     if (result == JOptionPane.OK_OPTION) {
                         affaire.setFecha(fechaField.getText());
                         affaire.setUbicacion(ubicacionField.getText());
@@ -78,7 +78,7 @@ public class AffaireButtonEditor extends DefaultCellEditor {
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         if (value == null) {
-            button.setText("Actualizar");
+            button.setText("Actualiser");
         } else {
             button.setText((String) value);
         }

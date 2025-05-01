@@ -39,12 +39,12 @@ public class PreuveButtonEditor extends DefaultCellEditor {
 
                     JPanel dialogPanel = new JPanel();
                     dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
-                    dialogPanel.add(new JLabel("Tipo:"));
+                    dialogPanel.add(new JLabel("Type:"));
                     dialogPanel.add(tipoField);
-                    dialogPanel.add(new JLabel("Descripción:"));
+                    dialogPanel.add(new JLabel("Description:"));
                     dialogPanel.add(descripcionField);
 
-                    int result = JOptionPane.showConfirmDialog(null, dialogPanel, "Editar Prueba", JOptionPane.OK_CANCEL_OPTION);
+                    int result = JOptionPane.showConfirmDialog(null, dialogPanel, "Modifier Preuve", JOptionPane.OK_CANCEL_OPTION);
                     if (result == JOptionPane.OK_OPTION) {
                         preuve.setTipo(tipoField.getText());
                         preuve.setDescripcion(descripcionField.getText());
@@ -56,7 +56,7 @@ public class PreuveButtonEditor extends DefaultCellEditor {
                 } else if (columnIndex == 4) { // Eliminar
                     int row = table.getSelectedRow();
                     int id = (int) table.getValueAt(row, 0);
-                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar esta prueba?", "Eliminar Prueba", JOptionPane.YES_NO_OPTION);
+                    int confirmacion = JOptionPane.showConfirmDialog(null, "Êtes-vous sûr de vouloir supprimer?", "Suprimmer Preuve", JOptionPane.YES_NO_OPTION);
                     if (confirmacion == JOptionPane.YES_OPTION) {
                         controller.eliminarPreuve(id);
                         // Eliminar la fila de la tabla
@@ -71,7 +71,7 @@ public class PreuveButtonEditor extends DefaultCellEditor {
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         if (value == null) {
-            button.setText("Actualizar");
+            button.setText("Actualiser");
         } else {
             button.setText((String) value);
         }

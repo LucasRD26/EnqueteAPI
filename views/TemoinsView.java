@@ -28,11 +28,11 @@ public class TemoinsView extends JFrame {
         // Tabla para mostrar testigos
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("ID");
-        model.addColumn("Nombre");
-        model.addColumn("Edad");
-        model.addColumn("Declaración");
-        model.addColumn("Actualizar");
-        model.addColumn("Eliminar");
+        model.addColumn("Nom");
+        model.addColumn("Age");
+        model.addColumn("Declaration");
+        model.addColumn("Actualiser");
+        model.addColumn("Eliminer");
 
         JTable table = new JTable(model);
         List<Temoins> temoins = controller.obtenerTemoins();
@@ -42,8 +42,8 @@ public class TemoinsView extends JFrame {
                     temoins1.getNombre(),
                     temoins1.getEdad(),
                     temoins1.getDeclaracion(),
-                    "Actualizar",
-                    "Eliminar"
+                    "Actualiser",
+                    "Eliminer"
             });
         }
 
@@ -64,7 +64,7 @@ public class TemoinsView extends JFrame {
         JTextField edadField = new JTextField();
         JTextField declaracionField = new JTextField();
 
-        JButton agregarButton = new JButton("Agregar Testigo");
+        JButton agregarButton = new JButton("Ajouter Temoin");
         agregarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -81,17 +81,17 @@ public class TemoinsView extends JFrame {
                         temoins1.getNombre(),
                         temoins1.getEdad(),
                         temoins1.getDeclaracion(),
-                        "Actualizar",
-                        "Eliminar"
+                        "Actualiser",
+                        "Eliminer"
                 });
             }
         });
 
-        nuevoPanel.add(new JLabel("Nombre:"));
+        nuevoPanel.add(new JLabel("Nom:"));
         nuevoPanel.add(nombreField);
-        nuevoPanel.add(new JLabel("Edad:"));
+        nuevoPanel.add(new JLabel("Age:"));
         nuevoPanel.add(edadField);
-        nuevoPanel.add(new JLabel("Declaración:"));
+        nuevoPanel.add(new JLabel("Declaration:"));
         nuevoPanel.add(declaracionField);
         nuevoPanel.add(agregarButton);
 

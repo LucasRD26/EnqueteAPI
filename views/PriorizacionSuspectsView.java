@@ -175,7 +175,7 @@ public class PriorizacionSuspectsView extends JFrame {
             StringBuilder sb = new StringBuilder();
             AffaireRelation.AffaireData data = relaciones.get(affaireId);
             
-            sb.append("=== Criterios de Priorización ===\n");
+            sb.append("=== Critères de priorisation ===\n");
             sb.append("Affaire ID: ").append(affaireId).append("\n");
             sb.append("Suspect: ").append(suspect).append("\n\n");
             
@@ -196,7 +196,7 @@ public class PriorizacionSuspectsView extends JFrame {
                 .filter(palabrasSuspect::contains)
                 .count();
             
-            sb.append("1. Coincidencias léxicas (").append(coincidencias).append("):\n");
+            sb.append("1. Coïncidences lexicales (").append(coincidencias).append("):\n");
             palabrasAffaire.stream()
                 .filter(palabrasSuspect::contains)
                 .forEach(p -> sb.append("   - ").append(p).append("\n"));
@@ -204,7 +204,7 @@ public class PriorizacionSuspectsView extends JFrame {
 
             // 2. Relaciones detectadas
             if(data != null && data.suspects.containsKey(suspect)) {
-                sb.append("2. Relaciones detectadas (").append(data.suspects.get(suspect).size()).append("):\n");
+                sb.append("2. Relations détectées (").append(data.suspects.get(suspect).size()).append("):\n");
                 data.suspects.get(suspect).forEach(p -> sb.append("   - ").append(p).append("\n"));
                 sb.append("\n");
             }
@@ -214,7 +214,7 @@ public class PriorizacionSuspectsView extends JFrame {
                 .filter(d -> d.guiltySuspect != null && d.guiltySuspect.equals(suspect))
                 .count();
             
-            sb.append("3. Casos resueltos relacionados: ").append(casosResueltos).append("\n");
+            sb.append("3. Cas résolus associés: ").append(casosResueltos).append("\n");
             
             return sb.toString();
         }

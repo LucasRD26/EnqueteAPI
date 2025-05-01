@@ -40,14 +40,14 @@ public class SuspectButtonEditor extends DefaultCellEditor {
 
                     JPanel dialogPanel = new JPanel();
                     dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
-                    dialogPanel.add(new JLabel("Nombre:"));
+                    dialogPanel.add(new JLabel("Nom:"));
                     dialogPanel.add(nombreField);
-                    dialogPanel.add(new JLabel("Edad:"));
+                    dialogPanel.add(new JLabel("Age:"));
                     dialogPanel.add(edadField);
-                    dialogPanel.add(new JLabel("Historial:"));
+                    dialogPanel.add(new JLabel("antecedents:"));
                     dialogPanel.add(historialField);
 
-                    int result = JOptionPane.showConfirmDialog(null, dialogPanel, "Editar Suspect", JOptionPane.OK_CANCEL_OPTION);
+                    int result = JOptionPane.showConfirmDialog(null, dialogPanel, "Modifier Suspect", JOptionPane.OK_CANCEL_OPTION);
                     if (result == JOptionPane.OK_OPTION) {
                         suspect.setNombre(nombreField.getText());
                         suspect.setEdad(Integer.parseInt(edadField.getText()));
@@ -73,7 +73,7 @@ public class SuspectButtonEditor extends DefaultCellEditor {
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         if (value == null) {
-            button.setText("Actualizar");
+            button.setText("Actualiser");
         } else {
             button.setText((String) value);
         }

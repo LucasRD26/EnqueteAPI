@@ -33,7 +33,7 @@ public class AnalyseLiensView extends JFrame {
         this.temoinsController = temoinsController;
         this.preuveController = preuveController;
         
-        setTitle("Analyse des Liens Suspects-Preuves-Temoins");
+        setTitle("Analyse des Liens entre Suspects-Preuves-Temoins");
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         initUI();
